@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: AUTH-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+          filters:
+            - name: UserServiceFilter
+        - id: PERFORMANCE-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/performance/**
+        - id: FORECAST-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/forecast/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
+jwt:
+  secret: "#$%dasdwe2edasxqr23edsd1dwghrt76j"
